@@ -1,37 +1,21 @@
 import React, { useEffect, useState } from "react";
 import api from "../utils/Api";
-import Card from "./card";
+import Card from "./Card";
 
 function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
-  const [userName, setUserName] = React.useState("");
-  const [userDescription, setUserDescription] = React.useState("");
-  const [userAvatar, setUserAvatar] = React.useState("");
-  const [cards, setCards] = React.useState([]);
-
+  const [userName, setUserName] = useState("");
+  const [userDescription, setUserDescription] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
+  const [cards, setCards] = useState([]);
   useEffect(() => {
-    api
-      .getUserData()
-      .then((profileUserInfo) => {
-        setUserName(profileUserInfo.name);
-        setUserDescription(profileUserInfo.about);
-        setUserAvatar(profileUserInfo.avatar);
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
-
-    api
-      .getInitialCards()
-      .then((dataCards) => {
-        setCards(
-          dataCards.map((data) => ({
-            name: data.name,
-            link: data.link,
-            alt: data.name,
-            likes: data.likes,
-            cardId: data._id,
-          }))
-        );
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
+    Promise.all([api.getInitialCards(), api.getUserData()]).then(
+      ([cards, usInfo]) => {
+        setCards(cards);
+        setUserName(usInfo.name);
+        setUserDescription(usInfo.about);
+        setUserAvatar(usInfo.avatar);
+      }
+    );
   }, []);
 
   return (
@@ -75,11 +59,9 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
         </section>
 
         <div className="elements">
-        {cards.map(({cardId, ...props}) => (
-            <Card key={cardId} {...props}
-              onCardClick = {onCardClick}
-            />
-        ))}
+          {cards.map((card) => (
+            <Card key={card._id} card={card} onCardClick={onCardClick} />
+          ))}
         </div>
       </main>
     </div>

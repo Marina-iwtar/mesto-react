@@ -15,7 +15,7 @@ function App() {
     setSelectedCard(card);
   }
 
-  function popupAllClose() {
+  function closeAllPopup() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
@@ -31,13 +31,13 @@ function App() {
           onEditAvatar={setIsEditAvatarPopupOpen}
           onCardClick={handleCardClick}
         />
-        <ImagePopup onClose={popupAllClose} card={selectedCard} name="image" />
+        <ImagePopup onClose={closeAllPopup} card={selectedCard} name="image" />
         <PopupWithForm
           name="profile"
           title="Редактировать профиль"
           textButtonSave="Сохранить"
           isOpen={isEditProfilePopupOpen}
-          onClose={popupAllClose}
+          onClose={closeAllPopup}
         >
           <input
             type="text"
@@ -45,8 +45,8 @@ function App() {
             placeholder="Имя"
             id="name-input"
             name="name"
-            //minlength="2"
-            //maxlength="40"
+            minLength="2"
+            maxLength="40"
             required
           />
           <span className="popup__input-error name-input-error"></span>
@@ -56,8 +56,8 @@ function App() {
             placeholder="О себе"
             id="aboutMy-input"
             name="about"
-            //minlength="2"
-            //maxlength="200"
+            minLength="2"
+            maxLength="200"
             required
           />
           <span className="popup__input-error aboutMy-input-error"></span>
@@ -68,7 +68,7 @@ function App() {
           title="Новое место"
           textButtonSave="Создать"
           isOpen={isAddPlacePopupOpen}
-          onClose={popupAllClose}
+          onClose={closeAllPopup}
         >
           <input
             type="text"
@@ -76,8 +76,8 @@ function App() {
             placeholder="Название"
             id="place-input"
             name="name"
-            //minlength="2"
-            //maxlength="30"
+            minLength="2"
+            maxLength="30"
             required
           />
           <span className="popup__input-error place-input-error"></span>
@@ -97,7 +97,7 @@ function App() {
           title="Обновить аватар"
           textButtonSave="Сохранить"
           isOpen={isEditAvatarPopupOpen}
-          onClose={popupAllClose}
+          onClose={closeAllPopup}
         >
           <input
             type="url"
@@ -115,7 +115,7 @@ function App() {
           title="Вы уверенны?"
           textButtonSave="Да"
           //isOpen={}
-          onClose={popupAllClose}
+          onClose={closeAllPopup}
         />
 
         <Footer />

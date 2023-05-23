@@ -26,7 +26,7 @@ function Card({ card, onCardClick }) {
               type="button"
               aria-label="кнопка лайк"
             ></button>
-            <span className="element__counter">{[card.likes].length}</span>
+            <span className="element__counter">{card.likes.length}</span>
           </div>
         </div>
       </article>

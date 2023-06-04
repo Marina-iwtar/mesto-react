@@ -1,23 +1,16 @@
-import React, { useEffect, useState } from "react";
-import api from "../utils/Api";
+import React, { useContext} from "react";
+
 import Card from "./Card";
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
-  const [userName, setUserName] = useState("");
-  const [userDescription, setUserDescription] = useState("");
-  const [userAvatar, setUserAvatar] = useState("");
-  const [cards, setCards] = useState([]);
-  useEffect(() => {
-    Promise.all([api.getInitialCards(), api.getUserData()]).then(
-      ([cards, usInfo]) => {
-        setCards(cards);
-        setUserName(usInfo.name);
-        setUserDescription(usInfo.about);
-        setUserAvatar(usInfo.avatar);
-      }
-    );
-  }, []);
+function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick , cards, onCardLike, onCardDelete}) {
 
+  
+  const currentUser = useContext(CurrentUserContext);
+
+ 
+
+  
   return (
     <div>
       <main className="content">
@@ -31,11 +24,11 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
                 onEditAvatar(true);
               }}
             >
-              <img src={userAvatar} alt="аватар" className="profile__avatar" />
+              <img src={currentUser.avatar} alt="аватар" className="profile__avatar" />
             </button>
             <div className="profile-info">
               <div className="profile-info__container">
-                <h1 className="profile-info__title">{userName}</h1>
+                <h1 className="profile-info__title">{currentUser.name}</h1>
                 <button
                   className="profile-info__edit-button"
                   type="button"
@@ -45,7 +38,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
                   }}
                 ></button>
               </div>
-              <p className="profile-info__paragraph">{userDescription}</p>
+              <p className="profile-info__paragraph">{currentUser.about}</p>
             </div>
           </div>
           <button
@@ -60,7 +53,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
 
         <div className="elements">
           {cards.map((card) => (
-            <Card key={card._id} card={card} onCardClick={onCardClick} />
+            <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike = {onCardLike} onCardDelete = {onCardDelete}/>
           ))}
         </div>
       </main>

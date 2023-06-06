@@ -36,31 +36,31 @@ function App() {
       })
       .catch((err) => console.log(`Ошибка ${err}`));
   }
-   
-  function handleUpdateAvatar(card){
-   api.editAvatar(card)
-   .then((res) => {
-    setCurrentUser(res);
-    closeAllPopup();
-  })
-  .catch((err) => console.log(`Ошибка ${err}`));
-}
-  function handleUpdateMesto(card){
-   api.addNewCard(card.name, card.link)
-   .then((newCard)=>{
-    setCards([newCard, ...cards]); 
-    closeAllPopup();
-   })
-   .catch((err) => console.log(`Ошибка ${err}`));
+
+  function handleUpdateAvatar(card) {
+    api
+      .editAvatar(card)
+      .then((res) => {
+        setCurrentUser(res);
+        closeAllPopup();
+      })
+      .catch((err) => console.log(`Ошибка ${err}`));
   }
-
-
+  function handleUpdateMesto(card) {
+    api
+      .addNewCard(card.name, card.link)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopup();
+      })
+      .catch((err) => console.log(`Ошибка ${err}`));
+  }
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    if (!isLiked) {
+     if (!isLiked) {
       api
         .likeCard(card._id)
         .then((newCard) =>
@@ -80,6 +80,7 @@ function App() {
         .catch((err) => console.log(`Ошибка ${err}`));
     }
   }
+
   function handleCardDelete(card) {
     api
       .removeCard(card._id)
@@ -124,15 +125,16 @@ function App() {
             onUpdateUser={handleUpdateUser}
           />
 
-         <AddPlacePopup
-           isOpen={isAddPlacePopupOpen}
-           onClose={closeAllPopup}
-           onAddPlace = {handleUpdateMesto}/>
+          <AddPlacePopup
+            isOpen={isAddPlacePopupOpen}
+            onClose={closeAllPopup}
+            onAddPlace={handleUpdateMesto}
+          />
 
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopup}
-            onUpdateAvatar = {handleUpdateAvatar}
+            onUpdateAvatar={handleUpdateAvatar}
           />
 
           <PopupWithForm

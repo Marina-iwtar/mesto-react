@@ -1,27 +1,24 @@
 import React, { useState, useContext, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-
-function AddPlacePopup({isOpen, onClose, onAddPlace}) {
-
+function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
   const [link, setLink] = useState("");
-  const [name,setName] = useState("");
-  
+  const [name, setName] = useState("");
+
   useEffect(() => {
     setName("");
     setLink("");
-  }, [isOpen]); 
+  }, [isOpen]);
 
-
-  function handleSubmitMesto(e){
+  function handleSubmitMesto(e) {
     e.preventDefault();
-    onAddPlace({name,link});
+    onAddPlace({ name, link });
   }
-  
-  function handleChangeNameMesto(e){
+
+  function handleChangeNameMesto(e) {
     setName(e.target.value);
   }
-  function handleChangeLink(e){
+  function handleChangeLink(e) {
     setLink(e.target.value);
   }
 
@@ -32,7 +29,7 @@ function AddPlacePopup({isOpen, onClose, onAddPlace}) {
       textButtonSave="Создать"
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit = {handleSubmitMesto}
+      onSubmit={handleSubmitMesto}
     >
       <input
         type="text"

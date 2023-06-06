@@ -7,7 +7,7 @@ function PopupWithForm({
   textButtonSave,
   onClose,
   isOpen,
-  onSubmit
+  onSubmit,
 }) {
   return (
     <div>
@@ -19,11 +19,15 @@ function PopupWithForm({
               type="button"
               aria-label="кнопка закрытия модального окна"
               onClick={onClose}
-            ></button>
+            />
             <h2 className="popup__title">{title}</h2>
-            <form className={`popup__form popup__form_${name}`} name={name} onSubmit={onSubmit}>
+            <form
+              className={`popup__form popup__form_${name}`}
+              name={name}
+              onSubmit={onSubmit}
+            >
               {children}
-              <button type="submit" className="popup__button" onClick={onClose}>
+              <button type="submit" className="popup__button">
                 {textButtonSave || "Сохранить"}
               </button>
             </form>

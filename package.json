@@ -20,7 +20,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "homepage": "https://marina-iwtar.github.io/mesto-react/",
+  "homepage": "https://marina-iwtar.github.io/react-mesto-auth/",
   "eslintConfig": {
     "extends": [
       "react-app",

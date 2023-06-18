@@ -4,6 +4,23 @@
 @import url("../blocks/page/page.css");
 @import url("../blocks/header/header.css");
 @import url("../blocks/header/__logo/header__logo.css");
+@import url("../blocks/header/__nav/header__nav.css");
+@import url("../blocks/header/__title/header__title.css");
+@import url("../blocks/header/__link/header__link.css");
+
+@import url("../blocks/contents/contents.css");
+@import url("../blocks/contents/__button/contents__button.css");
+@import url("../blocks/contents/__form/contents__form.css");
+@import url("../blocks/contents/__input/contents__input.css");
+@import url("../blocks/contents/__subtitle/contents__subtitle.css");
+@import url("../blocks/contents/__title/contents__title.css");
+@import url("../blocks/contents/__link/contents__link.css");
+
+@import url("../blocks/tooltip/__title/tooltip__title.css");
+@import url("../blocks/tooltip/__image/tooltip__image.css");
+
+
+
 @import url("../blocks/profile/profile.css");
 @import url("../blocks/profile/__container/profile__container.css");
 @import url("../blocks/profile/__avatar/profile__avatar.css");

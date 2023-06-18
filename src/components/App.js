@@ -1,14 +1,21 @@
-import Header from "./Header";
+//import Header from "./Header";
 import Main from "./Main.js";
-import Footer from "./Footer";
+//import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
+import Login from "./Login";
+import Register from "./Register";
 import ImagePopup from "./ImagePopup";
+import ProtectedRoute from "./ProtectedRoute";
 import React, { useEffect, useState } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/Api";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import * as Auth from "./Auth";
+import InfoTooltip from "./InfoTooltip.js";
+
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -17,8 +24,14 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const [userEmail, setUserEmail] = useState("");
+  const [infoTooltip, setInfoTooltip] = useState(false);
+  const [titleError, setTitleError] = useState("");
 
   useEffect(() => {
+    checkToken();
     Promise.all([api.getInitialCards(), api.getUserData()])
       .then(([cards, res]) => {
         setCards(cards);
@@ -60,7 +73,7 @@ function App() {
     // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
     // Отправляем запрос в API и получаем обновлённые данные карточки
-     if (!isLiked) {
+    if (!isLiked) {
       api
         .likeCard(card._id)
         .then((newCard) =>
@@ -99,21 +112,75 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setSelectedCard({});
+    setInfoTooltip(false);
   }
+
+  function handleLogin(){
+    setLoggedIn(true);
+  }
+  function handleRegister(){
+    setLoggedIn(true);
+  }
+
+  function checkToken() {
+    if(localStorage.getItem("token")){
+    const token = localStorage.getItem("token");
+    Auth.getContent(token)
+      .then((data) => {
+        if (!data) {
+          return;
+        }
+        setLoggedIn(true);
+        navigate("/");
+        setUserEmail(data.data.email);
+      })
+      .catch(() => {
+        setLoggedIn(false);
+      });}
+  }
+
+ /* useEffect(() => {
+    checkToken();
+  }, []);*/
+  
+
+  function goOut(){
+    localStorage.removeItem('token');
+    navigate('/sign-in');
+  }
+
   return (
     <div className="root">
       <div className="page">
         <CurrentUserContext.Provider value={currentUser}>
-          <Header />
-          <Main
-            onEditProfile={setIsEditProfilePopupOpen}
-            onAddPlace={setIsAddPlacePopupOpen}
-            onEditAvatar={setIsEditAvatarPopupOpen}
-            onCardClick={handleCardClick}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-            cards={cards}
-          />
+        
+          <Routes>
+            <Route path="/sign-up" element={<Register handleRegister = {handleRegister} setInfoTooltip ={setInfoTooltip} setTitleError = {setTitleError} />} />
+            <Route
+              path="/sign-in"
+              element={<Login handleLogin={handleLogin} />}
+            />
+           <Route path="/mesto-react" element={loggedIn? <Navigate to = "/"/>:<Navigate to = "/sign-in"/>}/>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute
+                  element={Main}
+                  loggedIn={loggedIn}
+                  userEmail = {userEmail}
+                  onClick = {goOut}
+                  onEditProfile={setIsEditProfilePopupOpen}
+                  onAddPlace={setIsAddPlacePopupOpen}
+                  onEditAvatar={setIsEditAvatarPopupOpen}
+                  onCardClick={handleCardClick}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                  cards={cards}
+                />
+              }
+            />
+          </Routes>
+
           <ImagePopup
             onClose={closeAllPopup}
             card={selectedCard}
@@ -144,8 +211,14 @@ function App() {
             //isOpen={}
             onClose={closeAllPopup}
           />
+         <InfoTooltip
+            onClose = {closeAllPopup}
+            isOpen={infoTooltip}
+            title = {titleError}
+          />
+          
 
-          <Footer />
+        
         </CurrentUserContext.Provider>
       </div>
     </div>

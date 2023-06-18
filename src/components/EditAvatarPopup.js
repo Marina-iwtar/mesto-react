@@ -1,20 +1,14 @@
-import  { useRef } from "react";
+import { useRef } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-
-function EditAvatarPopup({onUpdateAvatar, isOpen, onClose}) {
-  
-
+function EditAvatarPopup({ onUpdateAvatar, isOpen, onClose }) {
   const avatarRef = useRef();
- 
   function handleSubmitAvatar(e) {
     e.preventDefault();
-  
     onUpdateAvatar({
-      avatar: avatarRef.current.value });
-  } 
-
-
+      avatar: avatarRef.current.value,
+    });
+  }
   return (
     <PopupWithForm
       name="avatar"
@@ -22,7 +16,7 @@ function EditAvatarPopup({onUpdateAvatar, isOpen, onClose}) {
       textButtonSave="Сохранить"
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit = {handleSubmitAvatar}
+      onSubmit={handleSubmitAvatar}
     >
       <input
         type="url"

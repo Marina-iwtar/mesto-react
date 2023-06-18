@@ -1,18 +1,25 @@
-import React, { useContext} from "react";
-
+import React, { useContext } from "react";
+import Header from './Header';
 import Card from "./Card";
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import Footer from "./Footer";
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick , cards, onCardLike, onCardDelete}) {
-
-  
+function Main({
+  onEditProfile,
+  onAddPlace,
+  onEditAvatar,
+  onCardClick,
+  cards,
+  onCardLike,
+  onCardDelete,
+  userEmail,
+  onClick
+}) {
   const currentUser = useContext(CurrentUserContext);
 
- 
-
-  
   return (
     <div>
+      <Header path="/sign-in" nameButton = "Выйти" onClick = {onClick} userEmail={userEmail}/>
       <main className="content">
         <section className="profile">
           <div className="profile__container">
@@ -24,7 +31,11 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick , cards, on
                 onEditAvatar(true);
               }}
             >
-              <img src={currentUser.avatar} alt="аватар" className="profile__avatar" />
+              <img
+                src={currentUser.avatar}
+                alt="аватар"
+                className="profile__avatar"
+              />
             </button>
             <div className="profile-info">
               <div className="profile-info__container">
@@ -53,10 +64,17 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick , cards, on
 
         <div className="elements">
           {cards.map((card) => (
-            <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike = {onCardLike} onCardDelete = {onCardDelete}/>
+            <Card
+              key={card._id}
+              card={card}
+              onCardClick={onCardClick}
+              onCardLike={onCardLike}
+              onCardDelete={onCardDelete}
+            />
           ))}
         </div>
       </main>
+      <Footer/>
     </div>
   );
 }
